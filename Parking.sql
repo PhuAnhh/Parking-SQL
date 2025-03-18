@@ -144,3 +144,48 @@ CREATE TABLE lane_controllers(
     foreign key (control_unit_id) references control_units(id)
 )
 
+CREATE TABLE users(
+	id int identity(1, 1) primary key,
+	username varchar(50) not null,
+	password varchar(50) not null,
+	email varchar(50) not null,
+	created_at datetime default getdate() not null,
+	updated_at datetime default getdate()
+)
+
+
+CREATE TABLE roles(
+	id int identity (1, 1) primary key,
+	name varchar(50) not null,
+	description varchar(50) not null,
+	created_at datetime default getdate() not null,
+	updated_at datetime default getdate()
+)
+
+CREATE TABLE user_roles(
+	user_id int,
+	role_id int,
+	primary key (user_id, role_id),
+	created_at datetime default getdate() not null,
+	updated_at datetime default getdate(),
+	foreign key (user_id) references users(id),
+	foreign key (role_id) references roles(id)
+)
+
+CREATE TABLE permissions(
+	id int identity (1, 1) primary key,
+	name varchar(50) not null,
+	description varchar(50) not null,
+	created_at datetime default getdate() not null,
+	updated_at datetime default getdate()
+)
+
+CREATE TABLE role_permissions(
+	role_id int,
+	permission_id int,
+	primary key (role_id, permission_id),
+	created_at datetime default getdate() not null,
+	updated_at datetime default getdate(),
+	foreign key (role_id) references roles(id),
+	foreign key (permission_id) references permissions(id)
+)
